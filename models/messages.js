@@ -5,10 +5,11 @@ const config = require('../config/database');
 const Schema = mongoose.Schema;
 
 let messageSchema = new Schema({
-    person1: String,
-    person2: String,
+    sender: String,
+    recipient: String,
     topic: String,
-    message: []
+    message: String,
+    status: String
 })
 
 module.exports = mongoose.model("Message", messageSchema)

@@ -66,8 +66,7 @@ router.get("/profile", passport.authenticate('jwt', {session:false}), (req, res,
 
 // Messages
 router.get("/messages",passport.authenticate('jwt', {session:false}), (req, res, next)=>{
-    console.log(req.user)
-    Message.find({ $or: [{person1: req.user.name},{person2: req.user.name}]}, (err, data)=> {
+    Message.find({ $or: [{sender: req.user.name},{recipient: req.user.name}]}, (err, data)=> {
         if (err) throw err;
         else{
             let msg = []
@@ -115,6 +114,21 @@ router.get('/readMessages', (req, res, next)=>{
     })
 });
 
+//SEND NEW MESSAGE
+router.post('/sendNewMessage', (req, res, next) => {
+    console.log(req.body.sender)
+
+    let newMessage = new Message ({
+        sender: req.body.sender.username,
+        recipient: req.body.username,
+        topic: req.body.topic,
+        message: req.body.msg
+    })
+
+    newMessage.save();
+    return res.json({success: true});
+})
+
 //Send messsage in old message
 router.post('/sendMessage', (req, res, next) => {
 
@@ -139,19 +153,5 @@ router.post('/sendMessage', (req, res, next) => {
     })
 })
 
-//SEND NEW MESSAGE
-router.post('/sendNewMessage', (req, res, next) => {
-
-    msg = [0, req.body.sneder, req.body.msg];
-
-    let newMessage = new Message ({
-        person1: req.body.sender,
-        person2: req.body.recipient,
-        msg: [msg]
-    })
-
-    newMessage.save();
-    res.json({msg: "Message sent"});
-})
 
 module.exports = router;
