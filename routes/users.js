@@ -78,47 +78,14 @@ router.get("/messages",passport.authenticate('jwt', {session:false}), (req, res,
     })
 });
 
-
-
-//after cliking message
-router.get('/readMessages', (req, res, next)=>{
-    const id = req.body.messageID;
-    Message.findById(id, (err, message) => {
-        if(err) throw err;
-        if(message){
-            Message.findById(req.body.messageID, (err, doc)=> {
-                if(err) throw err;
-                let messages = [];
-                for (let i = 0; i < doc.msg.length; i++){
-                    if (doc.msg[i][1] == message.patient){
-                        oneMessage = "P: "+ doc.msg[i][2];
-                        messages.push(oneMessage);
-                        if(doc.msg[i][3] = false){
-                            doc[i][3] = true
-                        }
-                    }
-                    if(doc.msg[i][1] == message.doctor){
-                        oneMessage = "D: "+ doc.msg[i][2];
-                        messages.push(oneMessage);
-                        if(doc.msg[i][3] = false){
-                            doc[i][3] = true
-                        }
-                    }
-                }
-                res.json({message: messages})                
-            })
-        }
-        else{
-            return res.json({success: false, msg: 'messages not found'});
-        }
-    })
-});
-
 //SEND NEW MESSAGE
 router.post('/sendNewMessage', (req, res, next) => {
     console.log(req.body.sender)
-
-    let newMessage = new Message ({
+    if(req.body.username == "" || req.body.topic == "" || req.body.msg == ""){
+        return res.json({msg: "Fill all inputs"})
+    }
+    else{
+        let newMessage = new Message ({
         sender: req.body.sender.username,
         recipient: req.body.username,
         topic: req.body.topic,
@@ -127,6 +94,9 @@ router.post('/sendNewMessage', (req, res, next) => {
 
     newMessage.save();
     return res.json({success: true});
+    }
+
+    
 })
 
 //Send messsage in old message
