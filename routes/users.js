@@ -80,21 +80,26 @@ router.get("/messages",passport.authenticate('jwt', {session:false}), (req, res,
 
 //SEND NEW MESSAGE
 router.post('/sendNewMessage', (req, res, next) => {
-    console.log(req.body.sender)
-    if(req.body.username == "" || req.body.topic == "" || req.body.msg == ""){
-        return res.json({msg: "Fill all inputs"})
-    }
-    else{
-        let newMessage = new Message ({
-        sender: req.body.sender.username,
-        recipient: req.body.username,
-        topic: req.body.topic,
-        message: req.body.msg
-    })
 
-    newMessage.save();
-    return res.json({success: true});
-    }
+    User.getUserByUsername(req.body.username, (err, user) => {
+        if(err) throw err;
+        if(!user) {
+            return res.json({success: false, msg: 'No user with username '+ req.body.username});
+            }
+        if(user.username = req.body.sender.username){
+            return res.json({success: false, msg: "Can't send letter to yourself "+ req.body.username});
+        }
+        let newMessage = new Message ({
+            sender: req.body.sender.username,
+            recipient: req.body.username,
+            topic: req.body.topic,
+            message: req.body.msg
+        })
+
+        newMessage.save();
+        return res.json({success: true});
+        }
+    )     
 
     
 })
