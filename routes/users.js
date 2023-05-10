@@ -64,13 +64,29 @@ router.get("/profile", passport.authenticate('jwt', {session:false}), (req, res,
     res.json({user: req.user});
 });
 
-// messages
+// Messages
 router.get("/messages",passport.authenticate('jwt', {session:false}), (req, res, next)=>{
-    console.log(req)
+    //console.log(req.user)
+    Message.find({person1: req.user.name}, (err, data)=> {
+        if (err) throw err;
+        else{
+            let msg = []
+            for (let i = 0; i < data.length; i++){
+                //console.log(data[i].message[0][0]);
+                msg.push(data[i]);
+                //onsole.log(data[i])
+            }
+            //let msg = {person1: data[0].person1};
+            //console.log(msg);
+            return res.json({message: msg});
+        }
+    })
     
     
-    res.json({user: req.user});
+    //return res.json({message: req.user});
 });
+
+
 
 //after cliking message
 router.get('/readMessages', (req, res, next)=>{

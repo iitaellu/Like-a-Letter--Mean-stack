@@ -7,7 +7,8 @@ const Schema = mongoose.Schema;
 let messageSchema = new Schema({
     person1: String,
     person2: String,
-    msg: []
+    topic: String,
+    message: []
 })
 
 module.exports = mongoose.model("Message", messageSchema)
