@@ -67,14 +67,34 @@ router.get("/profile", passport.authenticate('jwt', {session:false}), (req, res,
 // Messages
 router.get("/messages",passport.authenticate('jwt', {session:false}), (req, res, next)=>{
     //console.log(req.user)
-    Message.find({person1: req.user.name}, (err, data)=> {
+    Message.find({ $or: [{person1: req.user.name},{person2: req.user.name}]}, (err, data)=> {
         if (err) throw err;
         else{
             let msg = []
+            let unr = []
             for (let i = 0; i < data.length; i++){
                 //console.log(data[i].message[0][0]);
-                msg.push(data[i]);
+                let unread = 0;
+                console.log( data[i].message[0].length)
+                for(let j = 0; j < data[i].message[0].length; j++){
+                    if(data[i].message[0][j] == false){
+                        unread++;
+                    }
+                messageinfo={
+                    id: data[i].id,
+                    person1: data[i].person1,
+                    person2: data[i].person2,
+                    topic: data[i].topic,
+                    unread: unread
+                }
+                //console.log(messageinfo)
+                }
+                //unr.push(unread)
+                //console.log(data[i].message[0][1])
+                //msg.push(data[i]);
                 //onsole.log(data[i])
+
+                msg.push(messageinfo);
             }
             //let msg = {person1: data[0].person1};
             //console.log(msg);
