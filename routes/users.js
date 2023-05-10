@@ -66,7 +66,7 @@ router.get("/profile", passport.authenticate('jwt', {session:false}), (req, res,
 
 // Messages
 router.get("/messages",passport.authenticate('jwt', {session:false}), (req, res, next)=>{
-    Message.find({ $or: [{sender: req.user.name},{recipient: req.user.name}]}, (err, data)=> {
+    Message.find({ $or: [{sender: req.user.username},{recipient: req.user.username}]}, (err, data)=> {
         if (err) throw err;
         else{
             let msg = []
@@ -86,7 +86,7 @@ router.post('/sendNewMessage', (req, res, next) => {
         if(!user) {
             return res.json({success: false, msg: 'No user with username '+ req.body.username});
             }
-        if(user.username = req.body.sender.username){
+        if(user.username == req.body.sender.username){
             return res.json({success: false, msg: "Can't send letter to yourself "+ req.body.username});
         }
         let newMessage = new Message ({
