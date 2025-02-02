@@ -1,4 +1,4 @@
-# Mean-Stack-Project - Like a letter
+# Mean-Stack-Project -- Like a letter
 
 Name: Ida Kirveskoski
 
