@@ -2,7 +2,7 @@
 
 Name: Ida Kirveskoski
 
-Learning diary: https://lut-my.sharepoint.com/:w:/g/personal/ida_kirveskoski_student_lut_fi/ES2GX9vpjZVLj2H6WkNko-4BYLrvia_D7ygpDSUuakIPtQ?e=6U9bJk 
+Learning diary: https://lut-my.sharepoint.com/:w:/g/personal/ida_kirveskoski_student_lut_fi/IQAthl_b6Y2VS49h-lpDZKPuAWC674mvw-8oKQ0lLmpCD7U?e=ZmkQZJ 
 
 This is very simple Mean-stack project, where users can send letters to each others after logging in.
 
